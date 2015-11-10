@@ -1,10 +1,10 @@
 ## Paloma
 
 [![NPM version][npm-image]][npm-url]
+[![Build status][travis-image]][travis-url]
 [![Dependency Status][david-image]][david-url]
 [![License][license-image]][license-url]
 [![Downloads][downloads-image]][downloads-url]
-[![Build Status](https://travis-ci.org/paloma/paloma.svg)](https://travis-ci.org/paloma/paloma)
 
 An angluar-like MVC framework, based on:
 
@@ -154,6 +154,8 @@ MIT
 
 [npm-image]: https://img.shields.io/npm/v/paloma.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/paloma
+[travis-image]: https://img.shields.io/travis/koajs/koala.svg?style=flat-square
+[travis-url]: https://travis-ci.org/koajs/koala
 [david-image]: http://img.shields.io/david/palomajs/paloma.svg?style=flat-square
 [david-url]: https://david-dm.org/palomajs/paloma
 [license-image]: http://img.shields.io/npm/l/paloma.svg?style=flat-square
