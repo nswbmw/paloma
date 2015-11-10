@@ -23,7 +23,7 @@ Paloma requires node v4.0.0 or higher for (partial) ES2015 support.
 ```
 'use strict';
 
-const Paloma = require('../../paloma');
+const Paloma = require('paloma');
 const app = new Paloma();
 
 app.controller('indexCtrl', function (ctx, next, indexService) {
