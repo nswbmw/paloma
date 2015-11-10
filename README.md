@@ -4,6 +4,7 @@
 [![Dependency Status][david-image]][david-url]
 [![License][license-image]][license-url]
 [![Downloads][downloads-image]][downloads-url]
+[![Build Status](https://travis-ci.org/paloma/paloma.svg)](https://travis-ci.org/paloma/paloma)
 
 An angluar-like MVC framework, based on:
 
