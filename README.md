@@ -1,7 +1,6 @@
 ## Paloma
 
 [![NPM version][npm-image]][npm-url]
-[![Test coverage][coveralls-image]][coveralls-url]
 [![Dependency Status][david-image]][david-url]
 [![License][license-image]][license-url]
 [![Downloads][downloads-image]][downloads-url]
@@ -148,17 +147,15 @@ Param                      | Type       | Details
 
 see [koa](https://github.com/koajs/koa/blob/master/docs/api/index.md).
 
+### License
+
+MIT
+
 [npm-image]: https://img.shields.io/npm/v/paloma.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/paloma
-[coveralls-image]: https://img.shields.io/coveralls/palomajs/paloma.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/palomajs/paloma?branch=master
 [david-image]: http://img.shields.io/david/palomajs/paloma.svg?style=flat-square
 [david-url]: https://david-dm.org/palomajs/paloma
 [license-image]: http://img.shields.io/npm/l/paloma.svg?style=flat-square
 [license-url]: LICENSE
 [downloads-image]: http://img.shields.io/npm/dm/paloma.svg?style=flat-square
 [downloads-url]: https://npmjs.org/package/paloma
-
-### License
-
-MIT
