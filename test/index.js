@@ -73,18 +73,29 @@ describe('Paloma test', function () {
   it('.service()', function () {
     const app = new Paloma();
     const authors = ['nswbmw', 'john', 'jack'];
+    const posts = {
+      nswbmw: 'one',
+      john: 'two',
+      jack: 'three'
+    };
 
-    app.service('User', function () {
+    app.service('Post', function () {
+      this.getPostByUser = function (user) {
+        return posts[user];
+      };
+    });
+
+    app.service('User', function (Post) {
       this.getUserById = function (id) {
-        return authors[id];
+        return `${authors[id]} - ${Post.getPostByUser(authors[id])}`;
       };
     });
 
     assert.equal(app.bottle.container.User, app.service('User'));
-    assert.equal(app.service('User').getUserById(0), 'nswbmw');
-    assert.equal(app.service('User').getUserById(1), 'john');
-    assert.equal(app.service('User').getUserById(2), 'jack');
-    assert.equal(app.service('User').getUserById(3), undefined);
+    assert.equal(app.service('User').getUserById(0), 'nswbmw - one');
+    assert.equal(app.service('User').getUserById(1), 'john - two');
+    assert.equal(app.service('User').getUserById(2), 'jack - three');
+    assert.equal(app.service('User').getUserById(3), 'undefined - undefined');
   });
 
   it('.factory()', function () {

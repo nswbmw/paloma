@@ -1,7 +1,7 @@
 {
   "name": "paloma",
   "description": "An angluar-like MVC framework, based on `koa` & `bottlejs`.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "lib/paloma.js",
   "scripts": {
     "test": "mocha test/"
@@ -19,7 +19,7 @@
     "di"
   ],
   "dependencies": {
-    "bottlejs": "https://github.com/palomajs/bottlejs/archive/v1.1.0-paloma.tar.gz",
+    "bottlejs": "^1.1.0",
     "debug": "^2.2.0",
     "fn-args": "^1.0.0",
     "koa": "^2.0.0-alpha.3",
