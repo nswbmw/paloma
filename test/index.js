@@ -22,7 +22,7 @@ describe('Paloma test', function () {
     assert(app.controller('indexCtrl'), 'indexCtrl should exist!');
   });
 
-  it('.route()', function () {
+  it('.route()', function (done) {
     const app = new Paloma();
 
     app.controller('indexCtrl', function (ctx, next) {
@@ -39,12 +39,68 @@ describe('Paloma test', function () {
       .get('/')
       .expect(200)
       .end(function (err, res) {
-        if (err) throw err;
+        if (err) return done(err);
         assert.equal(res.text, 'This is index page');
+        done();
       });
   });
 
-  it('.view()', function () {
+  it('.route() with validate', function (done) {
+    const app = new Paloma();
+    const validator = require('validator-it');
+    const convert = require('koa-convert');
+    const bodyparser = require('koa-bodyparser');
+
+    app.use(convert(bodyparser()));
+    app.controller('indexCtrl', function (ctx, next) {
+      ctx.body = 'This is index page';
+    });
+
+    app.route({
+      method: 'post',
+      path: '/',
+      controller: 'indexCtrl',
+      validate: {
+        body: {
+          user: function checkUser(user) {
+            if (!user) {
+              throw new Error('No user'); // this.throw(400, new Error('No user'))
+            }
+          }
+        },
+        'body.age': validator.isNumeric()
+      }
+    });
+
+    request(app.callback())
+      .post('/')
+      .expect(400)
+      .end(function (err, res) {
+        if (err) return done(err);
+        assert.equal(res.text, 'No user');
+
+        request(app.callback())
+          .post('/')
+          .send({ user: 'nswbmw' })
+          .expect(400)
+          .end(function (err, res) {
+            if (err) return done(err);
+            assert.equal(res.text, '[body.age: undefined] ✖ isNumeric');
+
+            request(app.callback())
+              .post('/')
+              .send({ user: 'nswbmw', age: '99' })
+              .expect(200)
+              .end(function (err, res) {
+                if (err) return done(err);
+                assert.equal(res.text, 'This is index page');
+                done();
+              });
+          });
+      });
+  });
+
+  it('.view()', function (done) {
     const app = new Paloma();
 
     app.controller('indexCtrl', function (ctx, next) {
@@ -64,9 +120,10 @@ describe('Paloma test', function () {
       .get('/')
       .expect(200)
       .end(function (err, res) {
-        if (err) throw err;
+        if (err) return done(err);
         assert.equal(res.type, 'text/html');
         assert.equal(res.text, '<p>This is index page</p>');
+        done();
       });
   });
 

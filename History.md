@@ -1,3 +1,8 @@
+## 0.2.0/2015-11-13
+
+- use paloma-router@0.2.0
+- update tests
+
 ## 0.1.2/2015-11-11
 
 - use bottlejs@^1.1.0
