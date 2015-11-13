@@ -155,8 +155,8 @@ MIT
 
 [npm-image]: https://img.shields.io/npm/v/paloma.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/paloma
-[travis-image]: https://img.shields.io/travis/koajs/koala.svg?style=flat-square
-[travis-url]: https://travis-ci.org/koajs/koala
+[travis-image]: https://img.shields.io/travis/palomajs/paloma.svg?style=flat-square
+[travis-url]: https://travis-ci.org/palomajs/paloma
 [david-image]: http://img.shields.io/david/palomajs/paloma.svg?style=flat-square
 [david-url]: https://david-dm.org/palomajs/paloma
 [license-image]: http://img.shields.io/npm/l/paloma.svg?style=flat-square
