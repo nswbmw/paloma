@@ -100,10 +100,10 @@ describe('Paloma test', function () {
       });
   });
 
-  it('.setEngine() would set global view engine', function (done) {
+  it('set engine would set global view engine', function (done) {
     const app = new Paloma();
 
-    app.setEngine('jade');
+    app.engine = 'jade';
     app.controller('indexCtrl', (ctx, next) => ctx.body = 'index body' );
     app.view('jadeView', 'h1= body');
     app.route({
@@ -124,10 +124,10 @@ describe('Paloma test', function () {
       });
   });
 
-  it('.setEngine() should be override by `engine` in specific `route.engine`', function (done) {
+  it('set engine should be override by `engine` in specific `route.engine`', function (done) {
     const app = new Paloma();
 
-    app.setEngine('jade');
+    app.engine = 'jade';
     app.controller('indexCtrl', (ctx, next) => ctx.body = 'index body' );
     app.view('generalView', 'h1= body');
     app.view('ejsView', '<h1><%= body %></h1> -- powered by ejs.');
