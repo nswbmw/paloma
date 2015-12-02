@@ -100,6 +100,70 @@ describe('Paloma test', function () {
       });
   });
 
+  it('set engine would set global view engine', function (done) {
+    const app = new Paloma();
+
+    app.engine = 'jade';
+    app.controller('indexCtrl', (ctx, next) => ctx.body = 'index body' );
+    app.view('jadeView', 'h1= body');
+    app.route({
+      method: 'GET',
+      path: '/',
+      controller: 'indexCtrl',
+      template: 'jadeView'
+    });
+
+    request(app.callback())
+      .get('/')
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        assert.equal(res.type, 'text/html');
+        assert.equal(res.text, '<h1>index body</h1>');
+        done();
+      });
+  });
+
+  it('set engine should be override by `engine` in specific `route.engine`', function (done) {
+    const app = new Paloma();
+
+    app.engine = 'jade';
+    app.controller('indexCtrl', (ctx, next) => ctx.body = 'index body' );
+    app.view('generalView', 'h1= body');
+    app.view('ejsView', '<h1><%= body %></h1> -- powered by ejs.');
+    app.route({
+      method: 'GET',
+      path: '/general',
+      controller: 'indexCtrl',
+      template: 'generalView'
+    });
+    app.route({
+      engine: 'ejs',
+      method: 'GET',
+      path: '/ejs',
+      controller: 'indexCtrl',
+      template: 'ejsView'
+    });
+
+    request(app.callback())
+      .get('/general')
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        assert.equal(res.type, 'text/html');
+        assert.equal(res.text, '<h1>index body</h1>');
+        request(app.callback())
+          .get('/ejs')
+          .expect(200)
+          .end((err, res) => {
+            if (err) return done(err);
+            assert.equal(res.type, 'text/html');
+            assert.equal(res.text, '<h1>index body</h1> -- powered by ejs.');
+            done();
+          });
+      });
+  });
+
   it('.view()', function (done) {
     const app = new Paloma();
 
