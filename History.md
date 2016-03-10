@@ -1,3 +1,8 @@
+## 0.3.0/2016-03-10
+
+- remove `.view`
+- fix `.controller` no return
+
 ## 0.2.0/2015-11-13
 
 - use paloma-router@0.2.0

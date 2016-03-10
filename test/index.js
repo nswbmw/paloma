@@ -100,33 +100,6 @@ describe('Paloma test', function () {
       });
   });
 
-  it('.view()', function (done) {
-    const app = new Paloma();
-
-    app.controller('indexCtrl', function (ctx, next) {
-      ctx.body = 'This is index page';
-    });
-
-    app.view('indexView', '<p><%= body %></p>');
-
-    app.route({
-      method: 'GET',
-      path: '/',
-      controller: 'indexCtrl',
-      template: 'indexView'
-    });
-
-    request(app.callback())
-      .get('/')
-      .expect(200)
-      .end(function (err, res) {
-        if (err) return done(err);
-        assert.equal(res.type, 'text/html');
-        assert.equal(res.text, '<p>This is index page</p>');
-        done();
-      });
-  });
-
   it('.service()', function () {
     const app = new Paloma();
     const authors = ['nswbmw', 'john', 'jack'];
