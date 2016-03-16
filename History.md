@@ -1,3 +1,7 @@
+## 0.4.0/2016-03-16
+
+- support generatorFunction in `.controller`
+
 ## 0.3.0/2016-03-10
 
 - remove `.view`
