@@ -33,7 +33,7 @@ app.controller('indexCtrl', function (ctx, next, indexService) {
 
 app.service('indexService', function () {
   this.getName = function () {
-    return 'paloma';
+    return 'Paloma';
   };
 });
 
@@ -46,6 +46,34 @@ app.route({
 app.listen(3000);
 ```
 More examples see [test](./test) and [paloma-examples](https://github.com/palomajs/paloma-examples).
+
+After v0.4.0, Paloma has been support generatorFunction:
+
+```
+'use strict';
+
+const Paloma = require('paloma');
+const app = new Paloma();
+
+app.controller('indexCtrl', function* (ctx, next, indexService) {
+  let name = yield indexService.getName();
+  ctx.body = `Hello, ${name}`;
+});
+
+app.service('indexService', function () {
+  this.getName = function* () {
+    return 'Paloma';
+  };
+});
+
+app.route({
+  method: 'GET',
+  path: '/',
+  controller: 'indexCtrl'
+});
+
+app.listen(3000);
+```
 
 ### API
 
