@@ -1,3 +1,7 @@
+## 0.5.0/2016-11-09
+
+- update deps
+
 ## 0.4.0/2016-03-16
 
 - support generatorFunction in `.controller`

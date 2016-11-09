@@ -178,7 +178,7 @@ describe('Paloma test', function () {
     try {
       app.bottle.container.authors = [];
     } catch (e) {
-      assert.equal(e.message, "Cannot assign to read only property 'authors' of #<Object>");
+      assert.equal(e.message, "Cannot assign to read only property 'authors' of object \'#<Object>\'");
     }
   });
 
