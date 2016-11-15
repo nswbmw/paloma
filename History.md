@@ -1,3 +1,9 @@
+## 1.0.0/2016-11-15
+
+- remove generatorFunction support!!!
+- fix async function controller bug(fn-args@2.0.0)
+- tweak codes & update deps
+
 ## 0.5.0/2016-11-09
 
 - update deps

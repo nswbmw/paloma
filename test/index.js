@@ -121,7 +121,7 @@ describe('Paloma test', function () {
       };
     });
 
-    assert.equal(app.bottle.container.User, app.service('User'));
+    assert.equal(app._bottle.container.User, app.service('User'));
     assert.equal(app.service('User').getUserById(0), 'nswbmw - one');
     assert.equal(app.service('User').getUserById(1), 'john - two');
     assert.equal(app.service('User').getUserById(2), 'jack - three');
@@ -141,7 +141,7 @@ describe('Paloma test', function () {
       return new UserService(container.authors);
     });
 
-    assert.equal(app.bottle.container.User, app.service('User'));
+    assert.equal(app._bottle.container.User, app.service('User'));
     assert.equal(app.service('User').getUserById(0), 'nswbmw');
     assert.equal(app.service('User').getUserById(1), 'john');
     assert.equal(app.service('User').getUserById(2), 'jack');
@@ -163,7 +163,7 @@ describe('Paloma test', function () {
       };
     });
 
-    assert.equal(app.bottle.container.User, app.service('User'));
+    assert.equal(app._bottle.container.User, app.service('User'));
     assert.equal(app.service('User').getUserById(0), 'nswbmw');
     assert.equal(app.service('User').getUserById(1), 'john');
     assert.equal(app.service('User').getUserById(2), 'jack');
@@ -174,9 +174,9 @@ describe('Paloma test', function () {
     const app = new Paloma();
     app.constant('authors', ['nswbmw', 'john', 'jack']);
 
-    assert.deepEqual(app.bottle.container.authors, ['nswbmw', 'john', 'jack']);
+    assert.deepEqual(app._bottle.container.authors, ['nswbmw', 'john', 'jack']);
     try {
-      app.bottle.container.authors = [];
+      app._bottle.container.authors = [];
     } catch (e) {
       assert(e.message.match("Cannot assign to read only property 'authors' of"));
     }
@@ -185,9 +185,9 @@ describe('Paloma test', function () {
   it('.value()', function () {
     const app = new Paloma();
     app.value('authors', ['nswbmw', 'john', 'jack']);
-    app.bottle.container.authors = ['a', 'b', 'c'];
+    app._bottle.container.authors = ['a', 'b', 'c'];
 
-    assert.deepEqual(app.bottle.container.authors, ['a', 'b', 'c']);
+    assert.deepEqual(app._bottle.container.authors, ['a', 'b', 'c']);
   });
 
   it('.decorator()', function () {
@@ -209,7 +209,7 @@ describe('Paloma test', function () {
       return service;
     });
 
-    assert.equal(app.bottle.container.User, app.service('User'));
+    assert.equal(app._bottle.container.User, app.service('User'));
 
     assert.equal(app.service('User').getUserById(0), 'nswbmw');
     assert.equal(app.service('User').getUserById(1), 'john');
@@ -240,7 +240,7 @@ describe('Paloma test', function () {
       return service;
     });
 
-    assert.equal(app.bottle.container.User, app.service('User'));
+    assert.equal(app._bottle.container.User, app.service('User'));
 
     assert.equal(app.service('User').getUserById(0), 'nswbmw');
     assert.equal(app.service('User').getUserById(1), 'john');

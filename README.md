@@ -8,18 +8,20 @@
 
 An angluar-like MVC framework, based on:
 
-- [koa](https://github.com/koajs/koa) Next generation web framework for node.js.
-- [bottlejs](https://github.com/young-steveo/bottlejs) A powerful dependency injection micro container.
+- [koa@2](https://github.com/koajs/koa/tree/v2.x): Next generation web framework for node.js.
+- [bottlejs](https://github.com/young-steveo/bottlejs): A powerful dependency injection micro container.
 
 ### Installation
 
 ```
-$ npm i paloma
+$ npm i paloma --save
 ```
 
-Paloma requires node v4.0.0 or higher for (partial) ES2015 support.
+If you use `async` function as controller, you may need node v7.0.0+ or babel.
 
 ### Example
+
+**Common function**
 
 ```
 'use strict';
@@ -45,9 +47,8 @@ app.route({
 
 app.listen(3000);
 ```
-More examples see [test](./test) and [paloma-examples](https://github.com/palomajs/paloma-examples).
 
-After v0.4.0, Paloma has been support generatorFunction:
+**Async function**
 
 ```
 'use strict';
@@ -55,13 +56,12 @@ After v0.4.0, Paloma has been support generatorFunction:
 const Paloma = require('paloma');
 const app = new Paloma();
 
-app.controller('indexCtrl', function* (ctx, next, indexService) {
-  let name = yield indexService.getName();
-  ctx.body = `Hello, ${name}`;
+app.controller('indexCtrl', async (ctx, next, indexService) => {
+  ctx.body = await Promise.resolve(`Hello, ${indexService.getName()}`);
 });
 
 app.service('indexService', function () {
-  this.getName = function* () {
+  this.getName = function () {
     return 'Paloma';
   };
 });
@@ -74,6 +74,8 @@ app.route({
 
 app.listen(3000);
 ```
+
+More examples see [test](./test) and [paloma-examples](https://github.com/palomajs/paloma-examples).
 
 ### API
 
@@ -174,7 +176,7 @@ Param                      | Type       | Details
 
 #### use(fn) &
 
-see [koa](https://github.com/koajs/koa/blob/master/docs/api/index.md).
+see [koa](https://github.com/koajs/koa/tree/v2.x).
 
 ### License
 
