@@ -1,3 +1,7 @@
+## 1.0.1/2017-03-17
+
+- update deps, especially for koa@2
+
 ## 1.0.0/2016-11-15
 
 - remove generatorFunction support!!!

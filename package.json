@@ -1,7 +1,7 @@
 {
   "name": "paloma",
   "description": "An angluar-like MVC framework, based on `koa@2` & `bottlejs`.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "lib/paloma.js",
   "scripts": {
     "test": "mocha test/"
@@ -19,9 +19,9 @@
     "di"
   ],
   "dependencies": {
-    "bottlejs": "^1.5.0",
+    "bottlejs": "^1.6.0",
     "fn-args": "^2.0.0",
-    "koa": "^2.0.0-alpha.7",
+    "koa": "^2.2.0",
     "paloma-router": "*",
     "require-directory": "^2.1.1"
   },
@@ -34,10 +34,9 @@
     "node": ">= 4"
   },
   "devDependencies": {
-    "koa-bodyparser": "^2.3.0",
-    "koa-convert": "^1.2.0",
-    "mocha": "^3.1.2",
-    "supertest": "^2.0.1",
+    "koa-bodyparser": "^4.1.0",
+    "mocha": "^3.2.0",
+    "supertest": "^3.0.0",
     "validator-it": "^1.1.0"
   }
 }

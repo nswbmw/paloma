@@ -48,10 +48,9 @@ describe('Paloma test', function () {
   it('.route() with validate', function (done) {
     const app = new Paloma();
     const validator = require('validator-it');
-    const convert = require('koa-convert');
     const bodyparser = require('koa-bodyparser');
 
-    app.use(convert(bodyparser()));
+    app.use(bodyparser());
     app.controller('indexCtrl', function (ctx, next) {
       ctx.body = 'This is index page';
     });

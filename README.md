@@ -17,7 +17,7 @@ An angluar-like MVC framework, based on:
 $ npm i paloma --save
 ```
 
-If you use `async` function as controller, you may need node v7.0.0+ or babel.
+If you use `async` function as controller, you may need node v7.6.0+ or babel.
 
 ### Example
 
