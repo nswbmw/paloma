@@ -1,3 +1,9 @@
+## 1.0.2/2017-09-11
+
+- update dependencies
+- update README
+- fix typo
+
 ## 1.0.1/2017-03-17
 
 - update deps, especially for koa@2

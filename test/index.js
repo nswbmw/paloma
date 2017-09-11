@@ -1,6 +1,6 @@
 'use strict';
 
-const Paloma = require('../lib/paloma');
+const Paloma = require('../paloma');
 const request = require('supertest');
 const assert = require('assert');
 

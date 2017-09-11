@@ -6,14 +6,14 @@
 [![License][license-image]][license-url]
 [![Downloads][downloads-image]][downloads-url]
 
-An angluar-like MVC framework, based on:
+An angular-like MVC framework, based on:
 
 - [koa@2](https://github.com/koajs/koa/tree/v2.x): Next generation web framework for node.js.
 - [bottlejs](https://github.com/young-steveo/bottlejs): A powerful dependency injection micro container.
 
 ### Installation
 
-```
+```sh
 $ npm i paloma --save
 ```
 
@@ -23,7 +23,7 @@ If you use `async` function as controller, you may need node v7.6.0+ or babel.
 
 **Common function**
 
-```
+```js
 'use strict';
 
 const Paloma = require('paloma');
@@ -50,7 +50,7 @@ app.listen(3000);
 
 **Async function**
 
-```
+```js
 'use strict';
 
 const Paloma = require('paloma');
