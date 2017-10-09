@@ -30,7 +30,7 @@ module.exports = class Paloma extends Koa {
     assert('object' === typeof route, '`route` must be a object');
     assert('string' === typeof route.method, '`method` must be a string, like: \'GET\'');
     assert('string' === typeof route.path, '`path` must be a string, like: \'/users/:name\'');
-    assert('string' === typeof route.controller || Array.isArray(route.controller), '`controller` must be a string or array');
+    assert('string' === typeof route.controller || 'function' === typeof route.controller || Array.isArray(route.controller), '`controller` must be a string or function or array');
 
     this.use(router.call(this, route));
     return this;

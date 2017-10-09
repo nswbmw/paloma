@@ -1,7 +1,7 @@
 {
   "name": "paloma",
   "description": "An angular-like MVC framework, based on `koa@2` & `bottlejs`.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "paloma.js",
   "scripts": {
     "test": "mocha test/"
