@@ -1,3 +1,9 @@
+## 1.1.0/2017-10-13
+
+- build-in paloma-router, use `another-json-schema` instead of `validator-it`
+- use standard eslint
+- use istanbul & update tests coverage to 100%
+
 ## 1.0.2/2017-09-11
 
 - update dependencies

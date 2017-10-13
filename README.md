@@ -24,56 +24,96 @@ If you use `async` function as controller, you may need node v7.6.0+ or babel.
 **Common function**
 
 ```js
-'use strict';
-
-const Paloma = require('paloma');
-const app = new Paloma();
+const Paloma = require('paloma')
+const app = new Paloma()
 
 app.controller('indexCtrl', function (ctx, next, indexService) {
-  ctx.body = `Hello, ${indexService.getName()}`;
-});
+  ctx.body = `Hello, ${indexService.getName()}`
+})
 
 app.service('indexService', function () {
   this.getName = function () {
-    return 'Paloma';
-  };
-});
+    return 'Paloma'
+  }
+})
 
 app.route({
   method: 'GET',
   path: '/',
   controller: 'indexCtrl'
-});
+})
 
-app.listen(3000);
+app.listen(3000)
+
+/*
+$ curl localhost:3000
+Hello, Paloma
+*/
 ```
 
 **Async function**
 
 ```js
-'use strict';
-
-const Paloma = require('paloma');
-const app = new Paloma();
+const Paloma = require('paloma')
+const app = new Paloma()
 
 app.controller('indexCtrl', async (ctx, next, indexService) => {
-  ctx.body = await Promise.resolve(`Hello, ${indexService.getName()}`);
-});
+  ctx.body = await Promise.resolve(`Hello, ${indexService.getName()}`)
+})
 
 app.service('indexService', function () {
   this.getName = function () {
-    return 'Paloma';
-  };
-});
+    return 'Paloma'
+  }
+})
 
 app.route({
   method: 'GET',
   path: '/',
   controller: 'indexCtrl'
-});
+})
 
-app.listen(3000);
+app.listen(3000)
+
+/*
+$ curl localhost:3000
+Hello, Paloma
+*/
 ```
+
+**Validator**
+
+```js
+const Paloma = require('paloma')
+const app = new Paloma()
+
+app.controller('indexCtrl', (ctx, next) => {
+  ctx.body = `Hello, ${ctx.query.name}}`
+})
+
+app.route({
+  method: 'GET',
+  path: '/',
+  controller: 'indexCtrl',
+  validate: {
+    query: {
+      name: { type: 'string', enum: ['tom', 'xp'], required: true }
+    }
+  }
+})
+
+app.listen(3000)
+/*
+$ curl localhost:3000
+($.query.name: undefined) ✖ (required: true)
+$ curl localhost:3000?name=tom
+Hello, tom
+$ curl localhost:3000?name=nswbmw
+($.query.name: "nswbmw") ✖ (enum: tom,xp)
+*/
+```
+
+More validators usage see [another-json-schema](https://github.com/nswbmw/another-json-schema).
 
 More examples see [test](./test) and [paloma-examples](https://github.com/palomajs/paloma-examples).
 

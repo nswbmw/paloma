@@ -1,10 +1,10 @@
 {
   "name": "paloma",
   "description": "An angular-like MVC framework, based on `koa@2` & `bottlejs`.",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "main": "paloma.js",
   "scripts": {
-    "test": "mocha test/"
+    "test": "node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha"
   },
   "keywords": [
     "web",
@@ -20,11 +20,13 @@
     "angular"
   ],
   "dependencies": {
-    "bottlejs": "^1.6.1",
-    "fn-args": "^3.0.0",
-    "koa": "^2.3.0",
-    "paloma-router": "*",
-    "require-directory": "^2.1.1"
+    "another-json-schema": "3.1.0",
+    "bottlejs": "1.6.1",
+    "fn-args": "3.0.0",
+    "koa": "2.3.0",
+    "koa-compose": "4.0.0",
+    "path-to-regexp": "2.0.0",
+    "require-directory": "2.1.1"
   },
   "repository": {
     "type": "git",
@@ -35,9 +37,14 @@
     "node": ">= 7.6"
   },
   "devDependencies": {
+    "eslint-config-standard": "10.2.1",
+    "eslint-plugin-import": "2.7.0",
+    "eslint-plugin-node": "5.2.0",
+    "eslint-plugin-promise": "3.5.0",
+    "eslint-plugin-standard": "3.0.1",
+    "istanbul": "0.4.5",
     "koa-bodyparser": "^4.2.0",
-    "mocha": "^3.5.2",
-    "supertest": "^3.0.0",
-    "validator-it": "^1.1.0"
+    "mocha": "^4.0.1",
+    "supertest": "^3.0.0"
   }
 }

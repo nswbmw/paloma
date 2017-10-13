@@ -1,251 +1,438 @@
-'use strict';
+const Paloma = require('../paloma')
+const request = require('supertest')
+const assert = require('assert')
+const path = require('path')
 
-const Paloma = require('../paloma');
-const request = require('supertest');
-const assert = require('assert');
-
-describe('Paloma test', function () {
+describe('Paloma', function () {
   it('.load()', function () {
-    const app = new Paloma();
+    const app = global.app = new Paloma()
     try {
-      app.load('abc');
+      app.load('abc')
     } catch (e) {
-      assert.equal(e.code, 'ENOENT');
+      assert.equal(e.code, 'ENOENT')
     }
-  });
+
+    app.load(path.join(__dirname, 'controllers'))
+    assert(app.controller('indexCtrl'), 'indexCtrl should exist!')
+
+    delete global.app
+  })
 
   it('.controller()', function () {
-    const app = new Paloma();
+    const app = new Paloma()
     app.controller('indexCtrl', function (ctx, next) {
-      ctx.body = 'This is index page';
-    });
-    assert(app.controller('indexCtrl'), 'indexCtrl should exist!');
-  });
+      ctx.body = 'This is index page'
+    })
+    assert(app.controller('indexCtrl'), 'indexCtrl should exist!')
+  })
 
-  it('.route()', function (done) {
-    const app = new Paloma();
+  describe('.route()', function () {
+    it('wrong controller type', function () {
+      const app = new Paloma()
+      let error
 
-    app.controller('indexCtrl', function (ctx, next) {
-      ctx.body = 'This is index page';
-    });
-
-    app.route({
-      method: 'GET',
-      path: '/',
-      controller: 'indexCtrl'
-    });
-
-    request(app.callback())
-      .get('/')
-      .expect(200)
-      .end(function (err, res) {
-        if (err) return done(err);
-        assert.equal(res.text, 'This is index page');
-        done();
-      });
-  });
-
-  it('.route() with validate', function (done) {
-    const app = new Paloma();
-    const validator = require('validator-it');
-    const bodyparser = require('koa-bodyparser');
-
-    app.use(bodyparser());
-    app.controller('indexCtrl', function (ctx, next) {
-      ctx.body = 'This is index page';
-    });
-
-    app.route({
-      method: 'post',
-      path: '/',
-      controller: 'indexCtrl',
-      validate: {
-        body: {
-          user: function checkUser(user) {
-            if (!user) {
-              throw new Error('No user'); // this.throw(400, new Error('No user'))
-            }
-          }
-        },
-        'body.age': validator.isNumeric()
+      try {
+        app.route({
+          method: 'GET',
+          path: '/',
+          controller: [1]
+        })
+      } catch (e) {
+        error = e
       }
-    });
+      assert(error.message === '`controller` only support function or name of controller.')
+    })
 
-    request(app.callback())
-      .post('/')
-      .expect(400)
-      .end(function (err, res) {
-        if (err) return done(err);
-        assert.equal(res.text, 'No user');
+    it('controller string', function () {
+      const app = new Paloma()
 
-        request(app.callback())
-          .post('/')
-          .send({ user: 'nswbmw' })
-          .expect(400)
-          .end(function (err, res) {
-            if (err) return done(err);
-            assert.equal(res.text, '[body.age: undefined] ✖ isNumeric');
+      app.controller('indexCtrl', function (ctx, next) {
+        ctx.body = 'This is index page'
+      })
 
-            request(app.callback())
-              .post('/')
-              .send({ user: 'nswbmw', age: '99' })
-              .expect(200)
-              .end(function (err, res) {
-                if (err) return done(err);
-                assert.equal(res.text, 'This is index page');
-                done();
-              });
-          });
-      });
-  });
+      app.route({
+        method: 'GET',
+        path: '/',
+        controller: 'indexCtrl'
+      })
 
-  it('.service()', function () {
-    const app = new Paloma();
-    const authors = ['nswbmw', 'john', 'jack'];
-    const posts = {
-      nswbmw: 'one',
-      john: 'two',
-      jack: 'three'
-    };
+      return request(app.callback())
+        .get('/')
+        .expect(200)
+        .then((res) => {
+          assert.equal(res.text, 'This is index page')
+        })
+    })
 
-    app.service('Post', function () {
-      this.getPostByUser = function (user) {
-        return posts[user];
-      };
-    });
+    it('controller function', function () {
+      const app = new Paloma()
 
-    app.service('User', function (Post) {
-      this.getUserById = function (id) {
-        return `${authors[id]} - ${Post.getPostByUser(authors[id])}`;
-      };
-    });
+      app.route({
+        method: 'GET',
+        path: '/',
+        controller: function (ctx, next) {
+          ctx.body = 'This is index page'
+        }
+      })
 
-    assert.equal(app._bottle.container.User, app.service('User'));
-    assert.equal(app.service('User').getUserById(0), 'nswbmw - one');
-    assert.equal(app.service('User').getUserById(1), 'john - two');
-    assert.equal(app.service('User').getUserById(2), 'jack - three');
-    assert.equal(app.service('User').getUserById(3), 'undefined - undefined');
-  });
+      return request(app.callback())
+        .get('/')
+        .expect(200)
+        .then((res) => {
+          assert.equal(res.text, 'This is index page')
+        })
+    })
+
+    it('controller array', function () {
+      const app = new Paloma()
+
+      app.controller('indexCtrl', function (ctx, next) {
+        ctx.body = 'This is index page'
+        return next()
+      })
+
+      app.route({
+        method: 'GET',
+        path: '/',
+        controller: [
+          'indexCtrl',
+          function (ctx, next) {
+            ctx.body += '!!!'
+          }
+        ]
+      })
+
+      return request(app.callback())
+        .get('/')
+        .expect(200)
+        .then((res) => {
+          assert.equal(res.text, 'This is index page!!!')
+        })
+    })
+
+    it('controller not exist', function () {
+      const app = new Paloma()
+      let error
+
+      try {
+        app.route({
+          method: 'GET',
+          path: '/',
+          controller: 'indexCtrl'
+        })
+      } catch (e) {
+        error = e
+      }
+      assert(error.message === 'controller indexCtrl is not defined')
+    })
+
+    it('params', function () {
+      const app = new Paloma()
+
+      app.controller('userCtrl', function (ctx, next) {
+        ctx.body = `This is ${ctx.params.user} page`
+      })
+
+      app.route({
+        method: 'GET',
+        path: '/users/:user',
+        controller: 'userCtrl'
+      })
+
+      return request(app.callback())
+        .get('/users/nswbmw')
+        .expect(200)
+        .then((res) => {
+          assert.equal(res.text, 'This is nswbmw page')
+        })
+    })
+
+    it('validate', function () {
+      const app = new Paloma()
+      const bodyparser = require('koa-bodyparser')
+
+      app.use(bodyparser())
+      app.controller('indexCtrl', function (ctx, next) {
+        ctx.body = ctx.request.body
+      })
+
+      app.route({
+        method: 'post',
+        path: '/',
+        controller: 'indexCtrl',
+        validate: {
+          body: {
+            user: { type: 'string', required: true },
+            age: { type: 'number' }
+          }
+        }
+      })
+
+      return request(app.callback())
+        .post('/')
+        .expect(400)
+        .then((res) => {
+          assert.equal(res.text, '($.body.user: undefined) ✖ (required: true)')
+        })
+        .then(() => {
+          return request(app.callback())
+            .post('/')
+            .send({ user: 'nswbmw', age: 18 })
+            .expect(200)
+            .then((res) => {
+              assert.deepEqual(res.body, { user: 'nswbmw', age: 18 })
+            })
+        })
+        .then(() => {
+          return request(app.callback())
+            .post('/')
+            .send({ user: 'nswbmw', age: '18' })
+            .expect(400)
+            .then((res) => {
+              assert.equal(res.text, '($.body.age: "18") ✖ (type: number)')
+            })
+        })
+    })
+
+    it('404', function () {
+      const app = new Paloma()
+
+      app.route({
+        method: 'GET',
+        path: '/',
+        controller: function (ctx, next) {
+          ctx.body = 'This is index page'
+        }
+      })
+
+      return request(app.callback())
+        .post('/')
+        .expect(404)
+        .then((res) => {
+          assert.equal(res.text, 'Not Found')
+        })
+        .then(() => {
+          return request(app.callback())
+            .get('/users')
+            .expect(404)
+            .then((res) => {
+              assert.equal(res.text, 'Not Found')
+            })
+        })
+    })
+
+    it('HEAD', function () {
+      const app = new Paloma()
+
+      app.route({
+        method: 'get',
+        path: '/',
+        controller: function (ctx, next) {
+          ctx.body = 'This is index page'
+        }
+      })
+
+      return request(app.callback())
+        .head('/')
+        .expect(200)
+        .then((res) => {
+          assert.equal(res.text, undefined)
+        })
+    })
+  })
+
+  describe('.service()', function () {
+    it('normal', function () {
+      const app = new Paloma()
+      const authors = ['nswbmw', 'john', 'jack']
+      const posts = {
+        nswbmw: 'one',
+        john: 'two',
+        jack: 'three'
+      }
+
+      app.service('Post', function () {
+        this.getPostByUser = function (user) {
+          return posts[user]
+        }
+      })
+
+      app.service('User', function (Post) {
+        this.getUserById = function (id) {
+          return `${authors[id]} - ${Post.getPostByUser(authors[id])}`
+        }
+      })
+
+      assert.equal(app._bottle.container.User, app.service('User'))
+      assert.equal(app.service('User').getUserById(0), 'nswbmw - one')
+      assert.equal(app.service('User').getUserById(1), 'john - two')
+      assert.equal(app.service('User').getUserById(2), 'jack - three')
+      assert.equal(app.service('User').getUserById(3), 'undefined - undefined')
+    })
+
+    it('http', function () {
+      const app = new Paloma()
+      const authors = ['nswbmw', 'john', 'jack']
+
+      app.service('User', function () {
+        this.getUserById = function (id) {
+          return authors[id]
+        }
+      })
+
+      app.controller('indexCtrl', function (ctx, next, User) {
+        const id = +ctx.query.id
+        ctx.body = User.getUserById(id)
+      })
+
+      app.route({
+        method: 'get',
+        path: '/',
+        controller: 'indexCtrl'
+      })
+
+      return request(app.callback())
+        .get('/')
+        .query({ id: 0 })
+        .expect(200)
+        .then((res) => {
+          assert(res.text === 'nswbmw')
+        })
+    })
+
+    it('service not exist', function () {
+      const app = new Paloma()
+      let error
+
+      try {
+        app.service('User')
+      } catch (e) {
+        error = e
+      }
+
+      assert(error.message === 'service User is not defined')
+    })
+  })
 
   it('.factory()', function () {
-    const app = new Paloma();
+    const app = new Paloma()
 
-    function UserService(authors) {
+    function UserService (authors) {
       this.getUserById = function (id) {
-        return authors[id];
-      };
+        return authors[id]
+      }
     }
-    app.constant('authors', ['nswbmw', 'john', 'jack']);
+    app.constant('authors', ['nswbmw', 'john', 'jack'])
     app.factory('User', function (container) {
-      return new UserService(container.authors);
-    });
+      return new UserService(container.authors)
+    })
 
-    assert.equal(app._bottle.container.User, app.service('User'));
-    assert.equal(app.service('User').getUserById(0), 'nswbmw');
-    assert.equal(app.service('User').getUserById(1), 'john');
-    assert.equal(app.service('User').getUserById(2), 'jack');
-    assert.equal(app.service('User').getUserById(3), undefined);
-  });
+    assert.equal(app._bottle.container.User, app.service('User'))
+    assert.equal(app.service('User').getUserById(0), 'nswbmw')
+    assert.equal(app.service('User').getUserById(1), 'john')
+    assert.equal(app.service('User').getUserById(2), 'jack')
+    assert.equal(app.service('User').getUserById(3), undefined)
+  })
 
   it('.provider()', function () {
-    const app = new Paloma();
+    const app = new Paloma()
 
-    function UserService(authors) {
+    function UserService (authors) {
       this.getUserById = function (id) {
-        return authors[id];
-      };
+        return authors[id]
+      }
     }
-    app.constant('authors', ['nswbmw', 'john', 'jack']);
+    app.constant('authors', ['nswbmw', 'john', 'jack'])
     app.provider('User', function () {
-      this.$get = function(container) {
-       return new UserService(container.authors);
-      };
-    });
+      this.$get = function (container) {
+        return new UserService(container.authors)
+      }
+    })
 
-    assert.equal(app._bottle.container.User, app.service('User'));
-    assert.equal(app.service('User').getUserById(0), 'nswbmw');
-    assert.equal(app.service('User').getUserById(1), 'john');
-    assert.equal(app.service('User').getUserById(2), 'jack');
-    assert.equal(app.service('User').getUserById(3), undefined);
-  });
+    assert.equal(app._bottle.container.User, app.service('User'))
+    assert.equal(app.service('User').getUserById(0), 'nswbmw')
+    assert.equal(app.service('User').getUserById(1), 'john')
+    assert.equal(app.service('User').getUserById(2), 'jack')
+    assert.equal(app.service('User').getUserById(3), undefined)
+  })
 
   it('.constant()', function () {
-    const app = new Paloma();
-    app.constant('authors', ['nswbmw', 'john', 'jack']);
+    const app = new Paloma()
+    app.constant('authors', ['nswbmw', 'john', 'jack'])
 
-    assert.deepEqual(app._bottle.container.authors, ['nswbmw', 'john', 'jack']);
+    assert.deepEqual(app._bottle.container.authors, ['nswbmw', 'john', 'jack'])
     try {
-      app._bottle.container.authors = [];
+      app._bottle.container.authors = []
     } catch (e) {
-      assert(e.message.match("Cannot assign to read only property 'authors' of"));
+      assert(e.message.match("Cannot assign to read only property 'authors' of"))
     }
-  });
+  })
 
   it('.value()', function () {
-    const app = new Paloma();
-    app.value('authors', ['nswbmw', 'john', 'jack']);
-    app._bottle.container.authors = ['a', 'b', 'c'];
+    const app = new Paloma()
+    app.value('authors', ['nswbmw', 'john', 'jack'])
+    app._bottle.container.authors = ['a', 'b', 'c']
 
-    assert.deepEqual(app._bottle.container.authors, ['a', 'b', 'c']);
-  });
+    assert.deepEqual(app._bottle.container.authors, ['a', 'b', 'c'])
+  })
 
   it('.decorator()', function () {
-    const app = new Paloma();
-    const authors = ['nswbmw', 'john', 'jack'];
-    var i = 0;
+    const app = new Paloma()
+    const authors = ['nswbmw', 'john', 'jack']
+    var i = 0
 
     app.service('User', function () {
       this.getUserById = function (id) {
-        return authors[id];
-      };
-    });
+        return authors[id]
+      }
+    })
 
     app.decorator(function (service) {
-      ++i;
+      ++i
       service.getIdByUser = function (user) {
-        return authors.indexOf(user);
-      };
-      return service;
-    });
+        return authors.indexOf(user)
+      }
+      return service
+    })
 
-    assert.equal(app._bottle.container.User, app.service('User'));
+    assert.equal(app._bottle.container.User, app.service('User'))
 
-    assert.equal(app.service('User').getUserById(0), 'nswbmw');
-    assert.equal(app.service('User').getUserById(1), 'john');
-    assert.equal(app.service('User').getUserById(2), 'jack');
-    assert.equal(app.service('User').getUserById(3), undefined);
+    assert.equal(app.service('User').getUserById(0), 'nswbmw')
+    assert.equal(app.service('User').getUserById(1), 'john')
+    assert.equal(app.service('User').getUserById(2), 'jack')
+    assert.equal(app.service('User').getUserById(3), undefined)
 
-    assert.equal(app.service('User').getIdByUser('nswbmw'), 0);
-    assert.equal(app.service('User').getIdByUser('john'), 1);
-    assert.equal(app.service('User').getIdByUser('jack'), 2);
-    assert.equal(app.service('User').getIdByUser('tom'), -1);
+    assert.equal(app.service('User').getIdByUser('nswbmw'), 0)
+    assert.equal(app.service('User').getIdByUser('john'), 1)
+    assert.equal(app.service('User').getIdByUser('jack'), 2)
+    assert.equal(app.service('User').getIdByUser('tom'), -1)
 
-    assert.equal(i, 1);
-  });
+    assert.equal(i, 1)
+  })
 
   it('.middleware()', function () {
-    const app = new Paloma();
-    const authors = ['nswbmw', 'john', 'jack'];
-    var i = 0;
+    const app = new Paloma()
+    const authors = ['nswbmw', 'john', 'jack']
+    var i = 0
 
     app.service('User', function () {
       this.getUserById = function (id) {
-        return authors[id];
-      };
-    });
+        return authors[id]
+      }
+    })
 
     app.middlewares(function (service) {
-      ++i;
-      return service;
-    });
+      ++i
+      return service
+    })
 
-    assert.equal(app._bottle.container.User, app.service('User'));
+    assert.equal(app._bottle.container.User, app.service('User'))
 
-    assert.equal(app.service('User').getUserById(0), 'nswbmw');
-    assert.equal(app.service('User').getUserById(1), 'john');
-    assert.equal(app.service('User').getUserById(2), 'jack');
-    assert.equal(app.service('User').getUserById(3), undefined);
+    assert.equal(app.service('User').getUserById(0), 'nswbmw')
+    assert.equal(app.service('User').getUserById(1), 'john')
+    assert.equal(app.service('User').getUserById(2), 'jack')
+    assert.equal(app.service('User').getUserById(3), undefined)
 
-    assert.equal(i, 6);
-  });
-});
+    assert.equal(i, 6)
+  })
+})
