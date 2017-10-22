@@ -11,10 +11,10 @@ module.exports = function (route) {
   let controller = Array.isArray(route.controller) ? route.controller : [route.controller]
 
   controller = controller.map(controllerName => {
-    if ('string' === typeof controllerName) {
+    if (typeof controllerName === 'string') {
       return this.controller(controllerName)
     }
-    if ('function' === typeof controllerName) {
+    if (typeof controllerName === 'function') {
       return controllerName
     }
     throw new TypeError('`controller` only support function or name of controller.')
@@ -53,7 +53,7 @@ module.exports = function (route) {
  * Decode value.
  */
 
-function decode(val) {
+function decode (val) {
   /* istanbul ignore else */
   if (val) return decodeURIComponent(val)
 }
@@ -62,12 +62,11 @@ function decode(val) {
  * Check request method.
  */
 
-function matches(ctx, method) {
+function matches (ctx, method) {
   if (ctx.method === method) return true
   if (method === 'GET' && ctx.method === 'HEAD') return true
   return false
 }
-
 
 function validatorMiddleware (schema, path) {
   const compiledSchema = AJS(path, schema)
