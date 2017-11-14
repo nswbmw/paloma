@@ -75,6 +75,6 @@ function validatorMiddleware (schema, path) {
     if (result.valid) {
       return next()
     }
-    ctx.throw(result.error.status || result.error.statusCode || 400, result.error)
+    ctx.throw(result.error.status || result.error.statusCode || 400, result.error.originError || result.error)
   }
 }
