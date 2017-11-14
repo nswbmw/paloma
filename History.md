@@ -1,3 +1,7 @@
+## 1.1.2/2017-11-14
+
+- upgrade `another-json-schema@^3.2.1`
+
 ## 1.1.1/2017-11-14
 
 - upgrade `another-json-schema@3.2.0`
