@@ -194,6 +194,51 @@ describe('Paloma', function () {
         })
     })
 
+    it('validate with customize error', function () {
+      const app = new Paloma()
+      const bodyparser = require('koa-bodyparser')
+
+      app.use(bodyparser())
+      app.controller('indexCtrl', function (ctx, next) {
+        ctx.body = ctx.request.body
+      })
+
+      const email = (actual, key, parent) => {
+        if (/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/.test(actual)) {
+          return true
+        }
+        throw new Error('E-mail format is incorrect!')
+      }
+
+      app.route({
+        method: 'post',
+        path: '/',
+        controller: 'indexCtrl',
+        validate: {
+          body: {
+            email: { type: email }
+          }
+        }
+      })
+
+      return request(app.callback())
+        .post('/')
+        .send({ email: '123' })
+        .expect(400)
+        .then((res) => {
+          assert.equal(res.text, 'E-mail format is incorrect!')
+        })
+        .then(() => {
+          return request(app.callback())
+            .post('/')
+            .send({ email: '123@aa.bb' })
+            .expect(200)
+            .then((res) => {
+              assert.deepEqual(res.body, { email: '123@aa.bb' })
+            })
+        })
+    })
+
     it('404', function () {
       const app = new Paloma()
 
