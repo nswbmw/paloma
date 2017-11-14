@@ -1,3 +1,7 @@
+## 1.1.1/2017-11-14
+
+- upgrade `another-json-schema@3.2.0`
+
 ## 1.1.0/2017-10-13
 
 - build-in paloma-router, use `another-json-schema` instead of `validator-it`

@@ -1,7 +1,7 @@
 {
   "name": "paloma",
   "description": "An angular-like MVC framework, based on `koa@2` & `bottlejs`.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "paloma.js",
   "scripts": {
     "test": "node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha"
@@ -20,7 +20,7 @@
     "angular"
   ],
   "dependencies": {
-    "another-json-schema": "3.1.0",
+    "another-json-schema": "3.2.0",
     "bottlejs": "1.6.1",
     "fn-args": "3.0.0",
     "koa": "2.3.0",
