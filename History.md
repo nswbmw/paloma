@@ -1,3 +1,7 @@
+## 1.1.3/2017-11-14
+
+- return `originError` message if exist
+
 ## 1.1.2/2017-11-14
 
 - upgrade `another-json-schema@^3.2.1`
