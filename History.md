@@ -1,3 +1,8 @@
+## 1.1.4/2018-01-10
+
+- update deps
+- add .eslintignore & lint script
+
 ## 1.1.3/2017-11-14
 
 - return `originError` message if exist
