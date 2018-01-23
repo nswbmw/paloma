@@ -1,3 +1,7 @@
+## 1.1.5/2018-01-23
+
+- add `ctx._matchedRoute` when a route is matched
+
 ## 1.1.4/2018-01-10
 
 - update deps

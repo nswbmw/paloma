@@ -51,6 +51,8 @@ Hello, Paloma
 */
 ```
 
+When a route is matched, its path is available at `ctx._matchedRoute`.
+
 **Async function**
 
 ```js

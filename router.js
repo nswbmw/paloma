@@ -35,6 +35,7 @@ module.exports = function (route) {
 
     /* istanbul ignore else */
     if (m) {
+      ctx._matchedRoute = path
       const args = m.slice(1).map(decode)
 
       keys.forEach((pathRe, index) => {
