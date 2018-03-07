@@ -67,19 +67,23 @@ describe('Paloma', function () {
     it('controller function', function () {
       const app = new Paloma()
 
+      app.service('User', function () {
+        this.getUsers = () => ['tom', 'xp']
+      })
+
       app.route({
         method: 'GET',
-        path: '/',
-        controller: function (ctx, next) {
-          ctx.body = 'This is index page'
+        path: '/users',
+        controller: function (ctx, next, User) {
+          ctx.body = User.getUsers()
         }
       })
 
       return request(app.callback())
-        .get('/')
+        .get('/users')
         .expect(200)
         .then((res) => {
-          assert.equal(res.text, 'This is index page')
+          assert.deepEqual(res.body, ['tom', 'xp'])
         })
     })
 

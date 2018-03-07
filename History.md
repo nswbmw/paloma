@@ -1,3 +1,10 @@
+## 1.1.6/2018-03-07
+
+- fix controller function cannot inject services
+- upgrade deps
+- update README.md
+- update test
+
 ## 1.1.5/2018-01-23
 
 - add `ctx._matchedRoute` when a route is matched

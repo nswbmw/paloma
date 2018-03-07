@@ -27,7 +27,7 @@ If you use `async` function as controller, you may need node v7.6.0+ or babel.
 const Paloma = require('paloma')
 const app = new Paloma()
 
-app.controller('indexCtrl', function (ctx, next, indexService) {
+app.controller('indexCtrl', (ctx, next, indexService) => {
   ctx.body = `Hello, ${indexService.getName()}`
 })
 
@@ -83,6 +83,29 @@ Hello, Paloma
 */
 ```
 
+or
+
+```js
+const Paloma = require('paloma')
+const app = new Paloma()
+
+app.route({
+  method: 'GET',
+  path: '/',
+  controller: async (ctx, next, indexService) => {
+    ctx.body = await Promise.resolve(`Hello, ${indexService.getName()}`)
+  }
+})
+
+app.service('indexService', function () {
+  this.getName = function () {
+    return 'Paloma'
+  }
+})
+
+app.listen(3000)
+```
+
 **Validator**
 
 ```js
@@ -116,6 +139,26 @@ $ curl localhost:3000?name=nswbmw
 ```
 
 More validators usage see [another-json-schema](https://github.com/nswbmw/another-json-schema).
+
+**Array controllers**
+
+```js
+const bodyParser = require('koa-bodyparser')
+const Paloma = require('paloma')
+const app = new Paloma()
+
+app.controller('indexCtrl', (ctx, next) => {
+  ctx.body = ctx.request.body
+})
+
+app.route({
+  method: 'POST',
+  path: '/',
+  controller: [bodyParser(), 'indexCtrl']
+})
+
+app.listen(3000)
+```
 
 More examples see [test](./test) and [paloma-examples](https://github.com/palomajs/paloma-examples).
 

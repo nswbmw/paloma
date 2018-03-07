@@ -1,3 +1,4 @@
+const fnArgs = require('fn-args')
 const debug = require('debug')('paloma-router')
 const pathToRegexp = require('path-to-regexp')
 const AJS = require('another-json-schema')
@@ -15,7 +16,10 @@ module.exports = function (route) {
       return this.controller(controllerName)
     }
     if (typeof controllerName === 'function') {
-      return controllerName
+      const _args = fnArgs(controllerName).slice(2)
+      return (ctx, next) => {
+        return controllerName.apply(null, [ctx, next].concat(_args.map(arg => this._bottle.container[arg])))
+      }
     }
     throw new TypeError('`controller` only support function or name of controller.')
   })
