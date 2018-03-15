@@ -30,7 +30,7 @@ module.exports = function (route) {
   controller = compose(controller)
 
   return (ctx, next) => {
-    ctx.params = {}
+    ctx.request.params = ctx.params = {}
     if (!matches(ctx, method)) return next()
 
     const keys = []

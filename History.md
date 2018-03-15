@@ -1,3 +1,7 @@
+## 1.1.7/2018-03-15
+
+- add `ctx.request.params`
+
 ## 1.1.6/2018-03-07
 
 - fix controller function cannot inject services
