@@ -1,3 +1,7 @@
+## 1.1.8/2018-04-11
+
+- update `another-json-schema`
+
 ## 1.1.7/2018-03-15
 
 - add `ctx.request.params`
