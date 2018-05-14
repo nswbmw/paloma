@@ -1,3 +1,8 @@
+## 1.2.0/2018-05-14
+
+- update deps
+- add `Types`
+
 ## 1.1.8/2018-04-11
 
 - update `another-json-schema`

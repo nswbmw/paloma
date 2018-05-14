@@ -5,6 +5,7 @@ const Bottle = require('bottlejs')
 const fnArgs = require('fn-args')
 const Koa = require('koa')
 const requireDirectory = require('require-directory')
+const AJS = require('another-json-schema')
 
 const router = require('./router')
 
@@ -97,3 +98,5 @@ module.exports = class Paloma extends Koa {
     return this
   }
 }
+
+module.exports.Types = AJS.Types
