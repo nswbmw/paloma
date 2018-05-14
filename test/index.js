@@ -484,4 +484,9 @@ describe('Paloma', function () {
 
     assert.equal(i, 6)
   })
+
+  it('.Types', function () {
+    const app = new Paloma()
+    assert.ok(typeof app.Types === 'object')
+  })
 })

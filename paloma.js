@@ -97,6 +97,10 @@ module.exports = class Paloma extends Koa {
     this._bottle.middleware.apply(this._bottle, arguments)
     return this
   }
+
+  get Types () {
+    return AJS.Types
+  }
 }
 
 module.exports.Types = AJS.Types
