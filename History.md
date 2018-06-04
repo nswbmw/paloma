@@ -1,3 +1,7 @@
+## 1.2.2/2018-06-04
+
+- add `ctx.state.routerName`
+
 ## 1.2.1/2018-05-14
 
 - export `app.Types`

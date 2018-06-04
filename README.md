@@ -106,6 +106,29 @@ app.service('indexService', function () {
 app.listen(3000)
 ```
 
+**routerName**
+
+```js
+const Paloma = require('paloma')
+const app = new Paloma()
+
+app.route({
+  method: 'GET',
+  path: '/',
+  routerName: 'getHome',
+  controller: (ctx, next) => {
+    ctx.body = `routerName: ${ctx.state.routerName}`
+  }
+})
+
+app.listen(3000)
+
+/*
+$ curl localhost:3000
+routerName: getHome
+*/
+```
+
 **Validator**
 
 ```js

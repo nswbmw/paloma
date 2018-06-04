@@ -7,6 +7,7 @@ const compose = require('koa-compose')
 module.exports = function (route) {
   const method = route.method.toUpperCase()
   const path = route.path
+  const routerName = route.routerName
   const validate = route.validate
 
   let controller = Array.isArray(route.controller) ? route.controller : [route.controller]
@@ -30,6 +31,7 @@ module.exports = function (route) {
   controller = compose(controller)
 
   return (ctx, next) => {
+    ctx.state.routerName = routerName
     ctx.request.params = ctx.params = {}
     if (!matches(ctx, method)) return next()
 
