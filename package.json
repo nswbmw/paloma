@@ -1,7 +1,7 @@
 {
   "name": "paloma",
   "description": "An angular-like MVC framework, based on `koa@2` & `bottlejs`.",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "main": "paloma.js",
   "scripts": {
     "lint": "eslint .",
@@ -22,7 +22,7 @@
     "angular"
   ],
   "dependencies": {
-    "another-json-schema": "^3.6.0",
+    "another-json-schema": "^3.7.0",
     "bottlejs": "1.7.1",
     "fn-args": "3.0.0",
     "koa": "2.5.1",

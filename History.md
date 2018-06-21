@@ -1,3 +1,7 @@
+## 1.2.3/2018-06-21
+
+- update AJS@3.7.0
+
 ## 1.2.2/2018-06-04
 
 - add `ctx.state.routerName`
