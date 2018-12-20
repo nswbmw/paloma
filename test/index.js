@@ -9,7 +9,7 @@ describe('Paloma', function () {
     try {
       app.load('abc')
     } catch (e) {
-      assert.equal(e.code, 'ENOENT')
+      assert.strict.equal(e.code, 'ENOENT')
     }
 
     app.load(path.join(__dirname, 'controllers'))
@@ -60,7 +60,7 @@ describe('Paloma', function () {
         .get('/')
         .expect(200)
         .then((res) => {
-          assert.equal(res.text, 'This is index page')
+          assert.strict.equal(res.text, 'This is index page')
         })
     })
 
@@ -83,7 +83,7 @@ describe('Paloma', function () {
         .get('/users')
         .expect(200)
         .then((res) => {
-          assert.deepEqual(res.body, ['tom', 'xp'])
+          assert.strict.deepEqual(res.body, ['tom', 'xp'])
         })
     })
 
@@ -110,7 +110,7 @@ describe('Paloma', function () {
         .get('/')
         .expect(200)
         .then((res) => {
-          assert.equal(res.text, 'This is index page!!!')
+          assert.strict.equal(res.text, 'This is index page!!!')
         })
     })
 
@@ -147,7 +147,7 @@ describe('Paloma', function () {
         .get('/users/nswbmw')
         .expect(200)
         .then((res) => {
-          assert.equal(res.text, 'This is nswbmw page')
+          assert.strict.equal(res.text, 'This is nswbmw page')
         })
     })
 
@@ -176,7 +176,7 @@ describe('Paloma', function () {
         .post('/')
         .expect(400)
         .then((res) => {
-          assert.equal(res.text, '($.body.user: undefined) ✖ (required: true)')
+          assert.strict.equal(res.text, '($.body.user: undefined) ✖ (required: true)')
         })
         .then(() => {
           return request(app.callback())
@@ -184,7 +184,7 @@ describe('Paloma', function () {
             .send({ user: 'nswbmw', age: 18 })
             .expect(200)
             .then((res) => {
-              assert.deepEqual(res.body, { user: 'nswbmw', age: 18 })
+              assert.strict.deepEqual(res.body, { user: 'nswbmw', age: 18 })
             })
         })
         .then(() => {
@@ -193,7 +193,7 @@ describe('Paloma', function () {
             .send({ user: 'nswbmw', age: '18' })
             .expect(400)
             .then((res) => {
-              assert.equal(res.text, '($.body.age: "18") ✖ (type: number)')
+              assert.strict.equal(res.text, '($.body.age: "18") ✖ (type: number)')
             })
         })
     })
@@ -230,7 +230,7 @@ describe('Paloma', function () {
         .send({ email: '123' })
         .expect(400)
         .then((res) => {
-          assert.equal(res.text, 'E-mail format is incorrect!')
+          assert.strict.equal(res.text, 'E-mail format is incorrect!')
         })
         .then(() => {
           return request(app.callback())
@@ -238,7 +238,7 @@ describe('Paloma', function () {
             .send({ email: '123@aa.bb' })
             .expect(200)
             .then((res) => {
-              assert.deepEqual(res.body, { email: '123@aa.bb' })
+              assert.strict.deepEqual(res.body, { email: '123@aa.bb' })
             })
         })
     })
@@ -258,14 +258,14 @@ describe('Paloma', function () {
         .post('/')
         .expect(404)
         .then((res) => {
-          assert.equal(res.text, 'Not Found')
+          assert.strict.equal(res.text, 'Not Found')
         })
         .then(() => {
           return request(app.callback())
             .get('/users')
             .expect(404)
             .then((res) => {
-              assert.equal(res.text, 'Not Found')
+              assert.strict.equal(res.text, 'Not Found')
             })
         })
     })
@@ -285,7 +285,7 @@ describe('Paloma', function () {
         .head('/')
         .expect(200)
         .then((res) => {
-          assert.equal(res.text, undefined)
+          assert.strict.equal(res.text, undefined)
         })
     })
   })
@@ -312,11 +312,11 @@ describe('Paloma', function () {
         }
       })
 
-      assert.equal(app._bottle.container.User, app.service('User'))
-      assert.equal(app.service('User').getUserById(0), 'nswbmw - one')
-      assert.equal(app.service('User').getUserById(1), 'john - two')
-      assert.equal(app.service('User').getUserById(2), 'jack - three')
-      assert.equal(app.service('User').getUserById(3), 'undefined - undefined')
+      assert.strict.equal(app._bottle.container.User, app.service('User'))
+      assert.strict.equal(app.service('User').getUserById(0), 'nswbmw - one')
+      assert.strict.equal(app.service('User').getUserById(1), 'john - two')
+      assert.strict.equal(app.service('User').getUserById(2), 'jack - three')
+      assert.strict.equal(app.service('User').getUserById(3), 'undefined - undefined')
     })
 
     it('http', function () {
@@ -376,11 +376,11 @@ describe('Paloma', function () {
       return new UserService(container.authors)
     })
 
-    assert.equal(app._bottle.container.User, app.service('User'))
-    assert.equal(app.service('User').getUserById(0), 'nswbmw')
-    assert.equal(app.service('User').getUserById(1), 'john')
-    assert.equal(app.service('User').getUserById(2), 'jack')
-    assert.equal(app.service('User').getUserById(3), undefined)
+    assert.strict.equal(app._bottle.container.User, app.service('User'))
+    assert.strict.equal(app.service('User').getUserById(0), 'nswbmw')
+    assert.strict.equal(app.service('User').getUserById(1), 'john')
+    assert.strict.equal(app.service('User').getUserById(2), 'jack')
+    assert.strict.equal(app.service('User').getUserById(3), undefined)
   })
 
   it('.provider()', function () {
@@ -398,18 +398,18 @@ describe('Paloma', function () {
       }
     })
 
-    assert.equal(app._bottle.container.User, app.service('User'))
-    assert.equal(app.service('User').getUserById(0), 'nswbmw')
-    assert.equal(app.service('User').getUserById(1), 'john')
-    assert.equal(app.service('User').getUserById(2), 'jack')
-    assert.equal(app.service('User').getUserById(3), undefined)
+    assert.strict.equal(app._bottle.container.User, app.service('User'))
+    assert.strict.equal(app.service('User').getUserById(0), 'nswbmw')
+    assert.strict.equal(app.service('User').getUserById(1), 'john')
+    assert.strict.equal(app.service('User').getUserById(2), 'jack')
+    assert.strict.equal(app.service('User').getUserById(3), undefined)
   })
 
   it('.constant()', function () {
     const app = new Paloma()
     app.constant('authors', ['nswbmw', 'john', 'jack'])
 
-    assert.deepEqual(app._bottle.container.authors, ['nswbmw', 'john', 'jack'])
+    assert.strict.deepEqual(app._bottle.container.authors, ['nswbmw', 'john', 'jack'])
     try {
       app._bottle.container.authors = []
     } catch (e) {
@@ -422,7 +422,7 @@ describe('Paloma', function () {
     app.value('authors', ['nswbmw', 'john', 'jack'])
     app._bottle.container.authors = ['a', 'b', 'c']
 
-    assert.deepEqual(app._bottle.container.authors, ['a', 'b', 'c'])
+    assert.strict.deepEqual(app._bottle.container.authors, ['a', 'b', 'c'])
   })
 
   it('.decorator()', function () {
@@ -444,19 +444,19 @@ describe('Paloma', function () {
       return service
     })
 
-    assert.equal(app._bottle.container.User, app.service('User'))
+    assert.strict.equal(app._bottle.container.User, app.service('User'))
 
-    assert.equal(app.service('User').getUserById(0), 'nswbmw')
-    assert.equal(app.service('User').getUserById(1), 'john')
-    assert.equal(app.service('User').getUserById(2), 'jack')
-    assert.equal(app.service('User').getUserById(3), undefined)
+    assert.strict.equal(app.service('User').getUserById(0), 'nswbmw')
+    assert.strict.equal(app.service('User').getUserById(1), 'john')
+    assert.strict.equal(app.service('User').getUserById(2), 'jack')
+    assert.strict.equal(app.service('User').getUserById(3), undefined)
 
-    assert.equal(app.service('User').getIdByUser('nswbmw'), 0)
-    assert.equal(app.service('User').getIdByUser('john'), 1)
-    assert.equal(app.service('User').getIdByUser('jack'), 2)
-    assert.equal(app.service('User').getIdByUser('tom'), -1)
+    assert.strict.equal(app.service('User').getIdByUser('nswbmw'), 0)
+    assert.strict.equal(app.service('User').getIdByUser('john'), 1)
+    assert.strict.equal(app.service('User').getIdByUser('jack'), 2)
+    assert.strict.equal(app.service('User').getIdByUser('tom'), -1)
 
-    assert.equal(i, 1)
+    assert.strict.equal(i, 1)
   })
 
   it('.middleware()', function () {
@@ -475,14 +475,14 @@ describe('Paloma', function () {
       return service
     })
 
-    assert.equal(app._bottle.container.User, app.service('User'))
+    assert.strict.equal(app._bottle.container.User, app.service('User'))
 
-    assert.equal(app.service('User').getUserById(0), 'nswbmw')
-    assert.equal(app.service('User').getUserById(1), 'john')
-    assert.equal(app.service('User').getUserById(2), 'jack')
-    assert.equal(app.service('User').getUserById(3), undefined)
+    assert.strict.equal(app.service('User').getUserById(0), 'nswbmw')
+    assert.strict.equal(app.service('User').getUserById(1), 'john')
+    assert.strict.equal(app.service('User').getUserById(2), 'jack')
+    assert.strict.equal(app.service('User').getUserById(3), undefined)
 
-    assert.equal(i, 6)
+    assert.strict.equal(i, 6)
   })
 
   it('.Types', function () {

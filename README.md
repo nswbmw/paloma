@@ -136,7 +136,7 @@ const Paloma = require('paloma')
 const app = new Paloma()
 
 app.controller('indexCtrl', (ctx, next) => {
-  ctx.body = `Hello, ${ctx.query.name}}`
+  ctx.body = `Hello, ${ctx.query.name}`
 })
 
 app.route({
