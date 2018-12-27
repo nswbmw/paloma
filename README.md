@@ -19,6 +19,10 @@ $ npm i paloma --save
 
 If you use `async` function as controller, you may need node v7.6.0+ or babel.
 
+### Scaffold
+
+see [create-paloma-app](https://github.com/palomajs/create-paloma-app).
+
 ### Example
 
 **Common function**
