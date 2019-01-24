@@ -1,3 +1,8 @@
+## 1.2.5/2019-01-24
+
+- update deps
+- fix: ctx.state.routerName
+
 ## 1.2.4/2018-12-20
 
 - upgrade deps

@@ -1,7 +1,7 @@
 {
   "name": "paloma",
   "description": "An angular-like MVC framework, based on `koa@2` & `bottlejs`.",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "main": "paloma.js",
   "scripts": {
     "lint": "eslint .",
@@ -22,12 +22,12 @@
     "angular"
   ],
   "dependencies": {
-    "another-json-schema": "^3.8.0",
+    "another-json-schema": "^3.8.2",
     "bottlejs": "1.7.1",
     "fn-args": "3.0.0",
     "koa": "2.6.2",
     "koa-compose": "4.1.0",
-    "path-to-regexp": "2.4.0",
+    "path-to-regexp": "3.0.0",
     "require-directory": "2.1.1"
   },
   "repository": {
@@ -39,15 +39,15 @@
     "node": ">= 7.6"
   },
   "devDependencies": {
-    "eslint": "5.10.0",
+    "eslint": "5.12.1",
     "eslint-config-standard": "12.0.0",
-    "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-node": "8.0.0",
+    "eslint-plugin-import": "2.15.0",
+    "eslint-plugin-node": "8.0.1",
     "eslint-plugin-promise": "4.0.1",
     "eslint-plugin-standard": "4.0.0",
     "istanbul": "0.4.5",
     "koa-bodyparser": "^4.2.1",
     "mocha": "^5.2.0",
-    "supertest": "^3.3.0"
+    "supertest": "^3.4.2"
   }
 }

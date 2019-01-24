@@ -31,7 +31,6 @@ module.exports = function (route) {
   controller = compose(controller)
 
   return (ctx, next) => {
-    ctx.state.routerName = routerName
     ctx.request.params = ctx.params = {}
     if (!matches(ctx, method)) return next()
 
@@ -41,6 +40,7 @@ module.exports = function (route) {
 
     /* istanbul ignore else */
     if (m) {
+      ctx.state.routerName = routerName
       ctx._matchedRoute = path
       const args = m.slice(1).map(decode)
 
